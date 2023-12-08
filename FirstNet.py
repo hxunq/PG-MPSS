@@ -78,19 +78,6 @@ class FirstNet(object):
         model_output = self.models(torch.Tensor(self.inputInfo).to(self.cuda))
         print("FN_Probability: ", F.softmax(model_output, dim=-1))
 
-    def update(self, model_output, batch_action, reward_tensor):
-        action_tensor = torch.LongTensor(batch_action)
-        reward_tensor = reward_tensor.to(self.cuda)
-
-        log_probs = torch.log(F.softmax(model_output, dim=-1))
-        selected_log_probs = reward_tensor * log_probs[np.arange(len(action_tensor)), action_tensor]
-        loss = -selected_log_probs.mean()
-
-        self.optimizer.zero_grad()
-        loss.backward()
-        # torch.nn.utils.clip_grad_norm(self.models.parameters(), max_norm=5, norm_type=2)
-        self.optimizer.step()
-
     def countAction(self, batch_action, batch_n):
         stageNumber = 0
         for batchTime in range(batch_n):

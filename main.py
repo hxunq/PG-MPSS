@@ -74,24 +74,25 @@ def save(FN, SN):
     print("save... success")
 
 
-def domain():
+def domain(isLoadParameters):
     inputInfo = ModelInfo().getModelInfo()
     device_n = len(ModelInfo().getExeTime())
 
     FN = FirstNet(batch_n=layer_num, input_data_size=40, output_data_size=2, lr=5e-6, inputInfo=inputInfo, cuda="cuda:0", device_n=device_n)
     SN = SecondNet(input_data_size=40, output_data_size=device_n, lr=7e-6, DNNInfo=inputInfo, batch_n=device_n, cuda="cuda:0")
 
-    # FN, SN = load(FN, SN)
+    if isLoadParameters:
+        FN, SN = load(FN, SN)
+        show_result.predict1(FN, SN)
+    else:
+        FN, SN = train(FN, SN, epoch_n=150000)
+        show_result.predict1(FN, SN)
 
-    FN, SN = train(FN, SN, epoch_n=150000)
-    show_result.predict1(FN, SN)
-
-    SN = SecondNet(input_data_size=40, output_data_size=device_n, lr=8e-6, DNNInfo=inputInfo, batch_n=device_n, cuda="cuda:0")
-    FN, SN = trainSN(FN, SN, epoch_n=150000)
-    show_result.predict1(FN, SN)
-
-    # save(FN, SN)
+        SN = SecondNet(input_data_size=40, output_data_size=device_n, lr=8e-6, DNNInfo=inputInfo, batch_n=device_n, cuda="cuda:0")
+        FN, SN = trainSN(FN, SN, epoch_n=150000)
+        show_result.predict1(FN, SN)
+        # save(FN, SN)
 
 
 if __name__ == '__main__':
-    domain()
+    domain(isLoadParameters=True)

@@ -13,8 +13,6 @@ def predict1(FN, SN):
 
     stageTime, epochTime = getStageTime(batch_action=SNbatch_action, stageComposition=stageComposition)
     print("************************************")
-    print("predict：")
-    print("FNbatch_action：", FNbatch_action)
     print("stageComposition:", stageComposition)
     print("SNbatch_action:", SNbatch_action)
     print("epochTime:", epochTime)

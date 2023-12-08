@@ -41,7 +41,8 @@ class InceptionV3Info:
         return InceptionV3Time
 
     def getRewardCap(self):
-        return 62
+        return 65
+        # return 62
         # return 58
         # return 55
         # return 70

@@ -148,16 +148,6 @@ class SecondNet(object):
             batch_action.extend(actions)
         return batch_action
 
-    def update(self, model_output, batch_action, reward_tensor):
-        action_tensor = torch.LongTensor(batch_action)
-        reward_tensor = reward_tensor.to(self.cuda)
-        log_probs = torch.log(F.softmax(model_output, dim=-1))
-        selected_log_probs = reward_tensor * log_probs[np.arange(len(action_tensor)), action_tensor]
-        loss = -selected_log_probs.mean()
-        self.optimizer.zero_grad()
-        loss.backward()
-        self.optimizer.step()
-
     def merge(self, a, b):
         for length in range(len(a)):
             b[length] = max(a[length], b[length])
